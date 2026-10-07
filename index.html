@@ -75,34 +75,29 @@ h1{font-size:clamp(4rem,11vw,11rem);line-height:.78;letter-spacing:-.085em;font-
   </div>
 </section>
 
-<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+
 <script>
-const ZIP_URL="https://raw.githubusercontent.com/lkwebforge-design/Camera-website-02/main/camera-video-under-25mb.zip";
+const VIDEO_URL="./DAD11FBC-C257-4ED7-B269-BC67BDB22D2B.mov";
 const heroVideo=document.getElementById("camera");
 const video=document.getElementById("scrollVideo");
 const scrub=document.getElementById("scrub");
 const progress=document.getElementById("progress");
-let duration=0,targetTime=0,displayTime=0,raf=0,ready=false;
+let duration=0,targetTime=0,displayTime=0,raf=0,ready=false,lastProgress=-1;
 
-async function loadVideo(){
-  const response=await fetch(ZIP_URL,{cache:"force-cache"});
-  if(!response.ok) throw new Error("Video archive could not be loaded.");
-  const zip=await JSZip.loadAsync(await response.arrayBuffer());
-  const entry=Object.values(zip.files).find(file=>!file.dir&&/\.(mp4|webm|mov)$/i.test(file.name));
-  if(!entry) throw new Error("No video file found in archive.");
-  const blob=await entry.async("blob");
-  const url=URL.createObjectURL(blob);
-  heroVideo.src=url;
-  video.src=url;
-  await new Promise((resolve,reject)=>{
-    video.addEventListener("loadedmetadata",resolve,{once:true});
-    video.addEventListener("error",reject,{once:true});
-  });
-  duration=video.duration;
-  ready=Number.isFinite(duration)&&duration>0;
-  heroVideo.currentTime=0;
-  video.currentTime=0;
-  requestAnimationFrame(()=>document.documentElement.classList.add("ready"));
+function loadVideo(){
+  heroVideo.src=VIDEO_URL;
+  video.src=VIDEO_URL;
+  video.load();
+  video.addEventListener("loadedmetadata",()=>{
+    duration=video.duration;
+    ready=Number.isFinite(duration)&&duration>0;
+    if(ready){
+      heroVideo.currentTime=0;
+      video.currentTime=0;
+      onScroll();
+    }
+  },{once:true});
+  video.addEventListener("error",e=>console.error("Camera video failed to load",e),{once:true});
 }
 
 function getProgress(){
@@ -116,30 +111,29 @@ function render(){
   raf=0;
   if(!ready)return;
   const delta=targetTime-displayTime;
-  displayTime += delta * 0.18;
-  if(Math.abs(delta)<0.002) displayTime=targetTime;
-  if(Math.abs(video.currentTime-displayTime)>0.008){
-    try{video.currentTime=Math.max(0,Math.min(duration-0.001,displayTime));}catch(e){}
+  displayTime += delta*0.2;
+  if(Math.abs(delta)<0.002)displayTime=targetTime;
+  const next=Math.max(0,Math.min(duration-0.001,displayTime));
+  if(Math.abs(video.currentTime-next)>0.006){
+    try{video.currentTime=next}catch(e){}
   }
-  progress.style.transform="scaleX("+Math.max(0,Math.min(1,displayTime/duration))+")";
+  const p=duration?displayTime/duration:0;
+  if(Math.abs(p-lastProgress)>0.001){
+    progress.style.transform="scaleX("+Math.max(0,Math.min(1,p))+")";
+    lastProgress=p;
+  }
   if(Math.abs(targetTime-displayTime)>0.002)raf=requestAnimationFrame(render);
 }
 
 function onScroll(){
   if(!ready)return;
-  const p=getProgress();
-  targetTime=p*duration;
+  targetTime=getProgress()*duration;
   if(!raf)raf=requestAnimationFrame(render);
 }
 
 addEventListener("scroll",onScroll,{passive:true});
 addEventListener("resize",onScroll,{passive:true});
-
-loadVideo().then(()=>{
-  onScroll();
-}).catch(error=>{
-  console.error(error);
-});
-</script>
+loadVideo();
+</script>>
 </body>
 </html>
