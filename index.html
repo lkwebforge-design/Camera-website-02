@@ -1,1 +1,145 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>FRAME / 01 — Camera</title><meta name="description" content="A cinematic camera experience controlled by scroll."><style>*{box-sizing:border-box}html,body{margin:0;background:#050505;color:#f5f5f5;font-family:Inter,system-ui,-apple-system,sans-serif}body{overflow-x:hidden}.hero{height:100svh;display:grid;place-items:center;position:relative;overflow:hidden;background:radial-gradient(circle at 50% 45%,#1b1b1b,#050505 62%)}.hero h1{font-size:clamp(4rem,12vw,11rem);letter-spacing:-.08em;margin:0;line-height:.8}.hero p{position:absolute;bottom:7vh;left:6vw;max-width:360px;color:#aaa}.scroll{position:absolute;right:6vw;bottom:7vh;color:#777;font-size:11px;letter-spacing:.2em}.sequence{height:420vh;position:relative}.sticky{position:sticky;top:0;height:100svh;overflow:hidden;background:#050505}.canvas{width:100%;height:100%;display:block}.shade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(0,0,0,.55),transparent 45%,rgba(0,0,0,.2))}.copy{position:absolute;left:6vw;top:50%;transform:translateY(-50%);max-width:360px;z-index:2}.eyebrow{font-size:11px;letter-spacing:.25em;color:#888;margin-bottom:18px}.copy h2{font-size:clamp(2.5rem,6vw,6rem);line-height:.9;letter-spacing:-.06em;margin:0 0 20px}.copy p{color:#aaa;line-height:1.7}.counter{position:absolute;right:5vw;bottom:6vh;font-variant-numeric:tabular-nums;color:#aaa;font-size:12px;letter-spacing:.14em;z-index:3}.final{min-height:100svh;display:grid;place-items:center;text-align:center;padding:10vw;background:#050505}.final h2{font-size:clamp(3rem,9vw,9rem);line-height:.85;letter-spacing:-.07em;margin:0}.final p{color:#888;max-width:500px;margin:28px auto}.btn{display:inline-block;padding:14px 24px;border:1px solid #444;border-radius:999px;color:#fff;text-decoration:none}.loading{position:absolute;inset:0;display:grid;place-items:center;background:#050505;z-index:5;transition:opacity .5s}.loading.hide{opacity:0;pointer-events:none}.bar{width:160px;height:1px;background:#333}.bar i{display:block;width:0;height:100%;background:#fff;transition:width .15s}</style></head><style>html,body{overflow-x:hidden}body{background:#050505;color:#fff}.hero{height:100svh;position:relative;overflow:hidden;background:#050505}.hero video,.sticky video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.2),rgba(0,0,0,.1) 45%,rgba(0,0,0,.7))}.hero-copy{position:absolute;z-index:2;left:6vw;bottom:10vh;max-width:700px}.hero-copy h1{font-size:clamp(4rem,11vw,11rem);line-height:.78;letter-spacing:-.08em;margin:0}.hero-copy p{max-width:430px;color:#ddd;line-height:1.6;margin-top:28px}.sequence{height:520vh}.sticky{position:sticky;top:0;height:100svh;overflow:hidden;background:#050505}.shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.58),transparent 55%,rgba(0,0,0,.15));pointer-events:none}.copy{position:absolute;z-index:2;left:6vw;top:50%;transform:translateY(-50%);max-width:460px}.copy h2{font-size:clamp(3rem,7vw,7rem);line-height:.85;letter-spacing:-.07em;margin:0 0 22px}.copy p{color:#bbb;line-height:1.7}.counter{position:absolute;z-index:3;right:5vw;bottom:6vh;color:#bbb;font-size:12px;letter-spacing:.15em}.loading{position:fixed;inset:0;z-index:10;background:#050505;display:grid;place-items:center;transition:opacity .7s}.loading.hide{opacity:0;pointer-events:none}.loading-inner{width:min(260px,60vw)}.bar{height:1px;background:#333}.bar i{display:block;height:100%;width:0;background:#fff;transition:width .15s}.final{min-height:100svh;display:grid;place-items:center;text-align:center;padding:12vw;background:#050505}.final h2{font-size:clamp(3.5rem,9vw,9rem);line-height:.82;letter-spacing:-.08em;margin:0}.final p{max-width:520px;color:#999;line-height:1.7;margin:30px auto}.btn{display:inline-block;border:1px solid #555;border-radius:999px;padding:14px 24px;color:#fff;text-decoration:none}</style><body><div class="loading" id="loading"><div class="loading-inner"><div style="font-size:10px;letter-spacing:.25em;margin-bottom:14px">LOADING CAMERA EXPERIENCE</div><div class="bar"><i id="bar"></i></div></div></div><section class="hero"><video id="heroVideo" muted playsinline preload="auto"></video><div class="hero-copy"><div class="eyebrow">WEBFORGE / FRAME 01</div><h1>CAPTURE<br>THE MOMENT.</h1><p>A cinematic camera experience where your scroll becomes the camera movement.</p></div><div class="scroll">SCROLL TO MOVE ↓</div></section><section class="sequence" id="sequence"><div class="sticky"><video id="scrollVideo" muted playsinline preload="auto"></video><div class="shade"></div><div class="copy"><div class="eyebrow">PRECISION / MOTION</div><h2>DESIGNED<br>TO MOVE.</h2><p>Scroll slowly. The camera follows your movement frame by frame, creating a smooth cinematic transition.</p></div><div class="counter"><span id="counter">00.0</span> / 100%</div></div></section><section class="final"><div><div class="eyebrow">FRAME / 01</div><h2>YOUR STORY.<br>IN MOTION.</h2><p>The camera sequence has finished. The experience now continues into the next chapter.</p><a class="btn" href="#sequence">REPLAY EXPERIENCE</a></div></section><script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script><script>const ZIP_URL="https://raw.githubusercontent.com/lkwebforge-design/Camera-website-02/main/camera-video-under-25mb.zip";const loading=document.getElementById("loading"),bar=document.getElementById("bar"),hero=document.getElementById("heroVideo"),vid=document.getElementById("scrollVideo"),seq=document.getElementById("sequence"),counter=document.getElementById("counter");let duration=0,target=0,current=0,raf=0,ready=false;async function boot(){const r=await fetch(ZIP_URL,{cache:"force-cache"});if(!r.ok)throw Error("archive");const zip=await JSZip.loadAsync(await r.arrayBuffer());const file=Object.values(zip.files).find(f=>!f.dir&&/\.(mp4|webm|mov)$/i.test(f.name));if(!file)throw Error("No video inside ZIP");bar.style.width="50%";const blob=await file.async("blob"),url=URL.createObjectURL(blob);hero.src=url;vid.src=url;await Promise.all([new Promise((a,b)=>{hero.onloadedmetadata=a;hero.onerror=b}),new Promise((a,b)=>{vid.onloadedmetadata=a;vid.onerror=b})]);duration=vid.duration;ready=true;bar.style.width="100%";setTimeout(()=>loading.classList.add("hide"),300);update()}function update(){if(!ready||!duration)return;const r=seq.getBoundingClientRect(),max=seq.offsetHeight-innerHeight,p=Math.max(0,Math.min(1,-r.top/max));target=p*duration;counter.textContent=(p*100).toFixed(1);if(!raf)raf=requestAnimationFrame(smooth)}function smooth(){raf=0;current+=(target-current)*.12;if(Math.abs(target-current)<.003)current=target;vid.currentTime=Math.max(0,Math.min(duration,current));if(Math.abs(target-current)>.003)raf=requestAnimationFrame(smooth)}addEventListener("scroll",update,{passive:true});document.querySelector(".btn").onclick=e=>{e.preventDefault();scrollTo({top:seq.offsetTop,behavior:"smooth"})};boot().catch(e=>{console.error(e);document.querySelector(".loading-inner").innerHTML="<div style='font-size:11px;letter-spacing:.15em'>VIDEO LOAD ERROR</div>"})</script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>FRAME — Camera Experience</title>
+<meta name="description" content="A cinematic scroll-driven camera experience by WebForge.">
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;background:#050505;color:#fff;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+html{scroll-behavior:auto}
+body{overflow-x:hidden}
+.hero{height:100svh;position:relative;overflow:hidden;background:#050505}
+.hero video,.scroll-stage video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.hero video{transform:scale(1.001)}
+.hero:after,.scroll-stage:after{content:"";position:absolute;inset:0;pointer-events:none}
+.hero:after{background:linear-gradient(180deg,rgba(0,0,0,.06),rgba(0,0,0,.08) 45%,rgba(0,0,0,.62))}
+.hero-ui{position:absolute;z-index:3;left:6vw;right:6vw;bottom:8vh;display:flex;align-items:flex-end;justify-content:space-between;gap:24px}
+.kicker{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:rgba(255,255,255,.62);margin-bottom:16px}
+h1{font-size:clamp(4rem,11vw,11rem);line-height:.78;letter-spacing:-.085em;font-weight:600;margin:0}
+.hero-note{max-width:330px;color:rgba(255,255,255,.72);font-size:13px;line-height:1.55}
+.scroll-hint{font-size:10px;letter-spacing:.22em;color:rgba(255,255,255,.62);white-space:nowrap}
+.scrub{height:520vh;position:relative}
+.scroll-stage{height:100svh;position:sticky;top:0;overflow:hidden;background:#050505}
+.scroll-stage:after{background:linear-gradient(90deg,rgba(0,0,0,.48),transparent 48%,rgba(0,0,0,.08))}
+.mini-ui{position:absolute;z-index:4;left:6vw;right:6vw;top:5vh;display:flex;justify-content:space-between;align-items:center;font-size:10px;letter-spacing:.2em;color:rgba(255,255,255,.58)}
+.story{position:absolute;z-index:4;left:6vw;bottom:9vh;max-width:430px}
+.story h2{font-size:clamp(3rem,7vw,7rem);line-height:.82;letter-spacing:-.075em;font-weight:600;margin:0 0 22px}
+.story p{margin:0;color:rgba(255,255,255,.68);font-size:14px;line-height:1.65}
+.progress{position:absolute;z-index:5;right:6vw;bottom:9vh;width:min(160px,22vw);height:1px;background:rgba(255,255,255,.2)}
+.progress i{display:block;width:0;height:100%;background:#fff;transform-origin:left center}
+.end{min-height:100svh;display:grid;place-items:center;text-align:center;padding:14vw 7vw;background:#070707}
+.end h2{font-size:clamp(3.5rem,9vw,9rem);line-height:.82;letter-spacing:-.08em;margin:0}
+.end p{max-width:480px;margin:28px auto 0;color:#888;line-height:1.7}
+@media(max-width:700px){
+ .hero-ui{display:block;bottom:7vh}.hero-note{margin-top:22px}.scroll-hint{margin-top:18px}
+ .story{bottom:7vh;max-width:78vw}.story h2{font-size:clamp(2.8rem,14vw,5rem)}
+ .mini-ui{top:3.5vh}.progress{right:6vw;bottom:5vh;width:90px}
+}
+@media(prefers-reduced-motion:reduce){.scrub{height:100svh}.scroll-stage{position:relative}}
+</style>
+</head>
+<body>
+
+<section class="hero" id="hero">
+  <video id="camera" muted playsinline preload="auto" aria-hidden="true"></video>
+  <div class="hero-ui">
+    <div>
+      <div class="kicker">WEBFORGE / FRAME 01</div>
+      <h1>CAPTURE<br>THE MOMENT.</h1>
+      <div class="hero-note">Scroll to move through the camera. Your movement controls the film.</div>
+    </div>
+    <div class="scroll-hint">SCROLL ↓</div>
+  </div>
+</section>
+
+<section class="scrub" id="scrub">
+  <div class="scroll-stage">
+    <video id="scrollVideo" muted playsinline preload="auto" aria-hidden="true"></video>
+    <div class="mini-ui"><span>FRAME / 01</span><span>SCROLL CONTROLLED</span></div>
+    <div class="story">
+      <div class="kicker">PRECISION / MOTION</div>
+      <h2>MOVE<br>THE CAMERA.</h2>
+      <p>Slow scroll, slow motion. Faster movement, faster motion. Scroll back and the film reverses with you.</p>
+    </div>
+    <div class="progress"><i id="progress"></i></div>
+  </div>
+</section>
+
+<section class="end">
+  <div>
+    <div class="kicker">WEBFORGE</div>
+    <h2>YOUR STORY.<br>IN MOTION.</h2>
+    <p>The cinematic sequence ends exactly where your scroll ends — ready for the next chapter.</p>
+  </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+<script>
+const ZIP_URL="https://raw.githubusercontent.com/lkwebforge-design/Camera-website-02/main/camera-video-under-25mb.zip";
+const heroVideo=document.getElementById("camera");
+const video=document.getElementById("scrollVideo");
+const scrub=document.getElementById("scrub");
+const progress=document.getElementById("progress");
+let duration=0,targetTime=0,displayTime=0,raf=0,ready=false;
+
+async function loadVideo(){
+  const response=await fetch(ZIP_URL,{cache:"force-cache"});
+  if(!response.ok) throw new Error("Video archive could not be loaded.");
+  const zip=await JSZip.loadAsync(await response.arrayBuffer());
+  const entry=Object.values(zip.files).find(file=>!file.dir&&/\.(mp4|webm|mov)$/i.test(file.name));
+  if(!entry) throw new Error("No video file found in archive.");
+  const blob=await entry.async("blob");
+  const url=URL.createObjectURL(blob);
+  heroVideo.src=url;
+  video.src=url;
+  await new Promise((resolve,reject)=>{
+    video.addEventListener("loadedmetadata",resolve,{once:true});
+    video.addEventListener("error",reject,{once:true});
+  });
+  duration=video.duration;
+  ready=Number.isFinite(duration)&&duration>0;
+  heroVideo.currentTime=0;
+  video.currentTime=0;
+  requestAnimationFrame(()=>document.documentElement.classList.add("ready"));
+}
+
+function getProgress(){
+  const max=scrub.offsetHeight-window.innerHeight;
+  if(max<=0)return 0;
+  const top=scrub.getBoundingClientRect().top;
+  return Math.max(0,Math.min(1,-top/max));
+}
+
+function render(){
+  raf=0;
+  if(!ready)return;
+  const delta=targetTime-displayTime;
+  displayTime += delta * 0.18;
+  if(Math.abs(delta)<0.002) displayTime=targetTime;
+  if(Math.abs(video.currentTime-displayTime)>0.008){
+    try{video.currentTime=Math.max(0,Math.min(duration-0.001,displayTime));}catch(e){}
+  }
+  progress.style.transform="scaleX("+Math.max(0,Math.min(1,displayTime/duration))+")";
+  if(Math.abs(targetTime-displayTime)>0.002)raf=requestAnimationFrame(render);
+}
+
+function onScroll(){
+  if(!ready)return;
+  const p=getProgress();
+  targetTime=p*duration;
+  if(!raf)raf=requestAnimationFrame(render);
+}
+
+addEventListener("scroll",onScroll,{passive:true});
+addEventListener("resize",onScroll,{passive:true});
+
+loadVideo().then(()=>{
+  onScroll();
+}).catch(error=>{
+  console.error(error);
+});
+</script>
+</body>
+</html>
